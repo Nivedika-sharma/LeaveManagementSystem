@@ -1,0 +1,208 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard-hero mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Welcome back 👋</h2>
+        <p class="mb-0">Here is the overview of your Leave Management System.</p>
+    </div>
+
+    <div class="dashboard-date">
+        @DateTime.Now.ToString("dd MMM yyyy")
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <input id="dashboardSearch"
+           class="form-control dashboard-search"
+           type="search"
+           placeholder="Search modules, requests, employees..." />
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6 dashboard-search-item" data-search="employees employee staff users">
+        <a asp-page="/Employees/List" class="text-decoration-none">
+            <div class="metric-card metric-blue">
+                <div class="metric-icon">👥</div>
+                <p>Employees</p>
+                <h3>@Model.EmployeesCount</h3>
+                <span>View Employees →</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-xl-3 col-md-6 dashboard-search-item" data-search="leave requests leave pending approved rejected">
+        <a asp-page="/EmployeeLeaves/List" class="text-decoration-none">
+            <div class="metric-card metric-purple">
+                <div class="metric-icon">📅</div>
+                <p>Leave Requests</p>
+                <h3>@Model.LeaveRequestsCount</h3>
+                <span>View Leaves →</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-xl-3 col-md-6 dashboard-search-item" data-search="wfh work from home remote">
+        <a asp-page="/WFH/List" class="text-decoration-none">
+            <div class="metric-card metric-green">
+                <div class="metric-icon">💻</div>
+                <p>WFH Requests</p>
+                <h3>@Model.WFHCount</h3>
+                <span>View WFH →</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-xl-3 col-md-6 dashboard-search-item" data-search="onduty on duty official work">
+        <a asp-page="/OnDuty/List" class="text-decoration-none">
+            <div class="metric-card metric-orange">
+                <div class="metric-icon">🚀</div>
+                <p>OnDuty Requests</p>
+                <h3>@Model.OnDutyCount</h3>
+                <span>View OnDuty →</span>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-7">
+        <div class="dashboard-panel">
+            <div class="panel-header">Quick Actions</div>
+
+            <div class="row g-3">
+                <div class="col-md-4 dashboard-search-item" data-search="apply leave request">
+                    <a asp-page="/EmployeeLeaves/Apply" class="quick-action qa-blue">📝 Apply Leave</a>
+                </div>
+
+                <div class="col-md-4 dashboard-search-item" data-search="apply wfh work from home">
+                    <a asp-page="/WFH/Apply" class="quick-action qa-green">💻 Apply WFH</a>
+                </div>
+
+                <div class="col-md-4 dashboard-search-item" data-search="apply onduty on duty">
+                    <a asp-page="/OnDuty/Apply" class="quick-action qa-orange">📁 Apply OnDuty</a>
+                </div>
+
+                <div class="col-md-4 dashboard-search-item" data-search="add employee">
+                    <a asp-page="/Employees/Add" class="quick-action qa-outline">➕ Add Employee</a>
+                </div>
+
+                <div class="col-md-4 dashboard-search-item" data-search="add department">
+                    <a asp-page="/Departments/Add" class="quick-action qa-outline">➕ Add Department</a>
+                </div>
+
+                <div class="col-md-4 dashboard-search-item" data-search="add designation">
+                    <a asp-page="/Designations/Add" class="quick-action qa-outline">➕ Add Designation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="dashboard-panel h-100">
+            <div class="panel-header">Recent Activity</div>
+
+            <div class="activity-row">
+                <span class="activity-badge bg-primary">Leave</span>
+                <span>New leave request submitted</span>
+            </div>
+
+            <div class="activity-row">
+                <span class="activity-badge bg-success">WFH</span>
+                <span>WFH request submitted</span>
+            </div>
+
+            <div class="activity-row">
+                <span class="activity-badge bg-warning text-dark">OnDuty</span>
+                <span>OnDuty request submitted</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="dashboard-panel">
+            <div class="panel-header">Recent Leaves</div>
+
+            @if (Model.RecentLeaves != null && Model.RecentLeaves.Any())
+            {
+                <div class="list-group list-group-flush">
+                    @foreach (var leave in Model.RecentLeaves)
+                    {
+                        <div class="list-group-item px-0">
+                            <strong>@leave.LeaveCategoryTitle</strong>
+                            <div class="text-muted small">
+                                @leave.StartDate.ToString("MMM dd, yyyy") to @leave.EndDate.ToString("MMM dd, yyyy")
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-muted">No recent leaves</div>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="dashboard-panel">
+            <div class="panel-header">Recent WFH / OnDuty</div>
+
+            @if ((Model.RecentWfhs != null && Model.RecentWfhs.Any()) ||
+                             (Model.RecentOnDuties != null && Model.RecentOnDuties.Any()))
+            {
+                <div class="list-group list-group-flush">
+                    @foreach (var wfh in Model.RecentWfhs)
+                    {
+                        <div class="list-group-item px-0">
+                            <strong>WFH</strong>
+                            <div class="text-muted small">
+                                @wfh.StartDate.ToString("MMM dd, yyyy") to @wfh.EndDate.ToString("MMM dd, yyyy")
+                            </div>
+                        </div>
+                    }
+
+                    @foreach (var onDuty in Model.RecentOnDuties)
+                    {
+                        <div class="list-group-item px-0">
+                            <strong>OnDuty</strong>
+                            <div class="text-muted small">
+                                @onDuty.StartDate.ToString("MMM dd, yyyy") to @onDuty.EndDate.ToString("MMM dd, yyyy")
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-muted">No recent WFH or OnDuty requests</div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("dashboardSearch");
+            const items = document.querySelectorAll(".dashboard-search-item");
+
+            if (!searchInput) return;
+
+            searchInput.addEventListener("keyup", function () {
+                const searchText = searchInput.value.toLowerCase().trim();
+
+                items.forEach(function (item) {
+                    const text = (item.innerText + " " + (item.dataset.search || "")).toLowerCase();
+                    item.style.display = text.includes(searchText) ? "" : "none";
+                });
+            });
+        });
+    </script>
+}

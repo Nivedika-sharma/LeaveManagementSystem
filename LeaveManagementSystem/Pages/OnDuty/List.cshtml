@@ -1,0 +1,84 @@
+﻿@page
+@using LeaveManagementSystem.AppCode
+@model LeaveManagementSystem.Pages.OnDuty.ListModel
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="page-title mb-1">OnDuty Requests</h2>
+
+        <p class="page-subtitle mb-0">
+            Manage OnDuty requests
+        </p>
+    </div>
+
+    <a asp-page="Apply" class="btn btn-warning action-btn">
+        + Apply OnDuty
+    </a>
+
+</div>
+
+<div class="card lms-card">
+
+    <div class="card-body">
+
+        <table class="table table-hover lms-table">
+
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Document</th>
+                    
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.OnDutyList)
+                {
+                    <tr>
+
+                        <td>@item.EmployeeName</td>
+
+                        <td>@Html.DisplayDate(item.StartDate)</td>
+
+                        <td>@Html.DisplayDate(item.EndDate)</td>
+
+                        <td>@item.Reason</td>
+
+                        <td>
+
+                            @if (!string.IsNullOrEmpty(item.SupportingDocument))
+                            {
+                                <a href="~/uploads/@item.SupportingDocument"
+                                       target="_blank"
+                                       class="btn btn-sm btn-outline-primary">
+
+                                    View Document
+
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    No Document
+                                </span>
+                            }
+
+                        </td>
+
+                        
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Leave Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="d-flex">
+        <aside class="sidebar bg-primary text-white p-3">
+            <div class="sidebar-brand d-flex align-items-center mb-4">
+                <div class="brand-logo me-2"></div>
+                <div>
+                    <h4 class="mb-0">LMS Portal</h4>
+                    <small class="text-white-50">Leave Management</small>
+                </div>
+            </div>
+
+            <nav class="nav flex-column">
+                <a asp-page="/Index" class="nav-link text-white">Dashboard</a>
+                <a asp-page="/Departments/List" class="nav-link text-white">Departments</a>
+                <a asp-page="/Designations/List" class="nav-link text-white">Designations</a>
+                <a asp-page="/Employees/List" class="nav-link text-white">Employees</a>
+                <a asp-page="/LeaveCategories/List" class="nav-link text-white">Leave Categories</a>
+                <a asp-page="/EmployeeLeaves/List" class="nav-link text-white">Leaves</a>
+                <a asp-page="/WFH/List" class="nav-link text-white">WFH</a>
+                <a asp-page="/OnDuty/List" class="nav-link text-white">OnDuty</a>
+            </nav>
+        </aside>
+
+        <main class="content flex-grow-1">
+            <nav class="navbar navbar-light bg-white shadow-sm px-4">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-0 h5">Leave Management System</span>
+                    <div class="d-flex align-items-center">
+                        @if (User?.Identity?.IsAuthenticated ?? false)
+                        {
+                            <span class="me-3 text-muted">@User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value</span>
+                            <a asp-page="/Account/Logout" class="btn btn-link btn-sm">Logout</a>
+                        }
+                        else
+                        {
+                            <a asp-page="/Account/Login" class="btn btn-primary btn-sm">Login</a>
+                        }
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid p-4">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

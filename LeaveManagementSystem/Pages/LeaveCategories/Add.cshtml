@@ -1,0 +1,32 @@
+﻿@page
+@model LeaveManagementSystem.Pages.LeaveCategories.AddModel
+
+<h2>Add Leave Category</h2>
+
+<form method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="IsDocumentRequired" class="form-check-input" />
+        <label class="form-check-label">Is Document Required?</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="List" class="btn btn-secondary">Back</a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

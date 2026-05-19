@@ -1,0 +1,35 @@
+@page
+@model LeaveManagementSystem.Pages.Account.LogoutModel
+
+@{
+    ViewData["Title"] = "Logout";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="height:60vh;">
+    <div class="text-center">
+        <h4 class="mb-3">Sign out</h4>
+        <p class="text-muted mb-4">@if (!string.IsNullOrEmpty(Model.UserName)) { <text>Signed in as <strong>@Model.UserName</strong></text> } else { <text>You are about to sign out.</text> }</p>
+
+        <form method="post" id="logoutForm">
+            <button type="submit" class="btn btn-danger me-2" id="confirmBtn">Sign out</button>
+            <a asp-page="/Index" class="btn btn-secondary">Cancel</a>
+        </form>
+
+        <div class="mt-3" id="logoutSpinner" style="display:none;">
+            <div class="spinner-border text-danger" role="status">
+                <span class="visually-hidden">Signing out...</span>
+            </div>
+            <div class="mt-2 text-muted">Signing you out...</div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('logoutForm').addEventListener('submit', function (e) {
+            var btn = document.getElementById('confirmBtn');
+            btn.disabled = true;
+            document.getElementById('logoutSpinner').style.display = 'block';
+        });
+    </script>
+}

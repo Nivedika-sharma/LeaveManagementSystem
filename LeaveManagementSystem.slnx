@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Core/Core.csproj" />
+  <Project Path="Data/Data.csproj" />
+  <Project Path="LeaveManagementSystem/LeaveManagementSystem.csproj" />
+  <Project Path="ServiceLayer/ServiceLayer.csproj" />
+</Solution>

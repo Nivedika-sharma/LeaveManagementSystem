@@ -1,0 +1,179 @@
+﻿@page
+@model LeaveManagementSystem.Pages.EmployeeLeaves.ListModel
+@using LeaveManagementSystem.AppCode
+@using ServiceLayer
+
+@{
+    ViewData["Title"] = "Employee Leave List";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="table-title mb-1">
+            Employee Leave List
+        </h2>
+
+        <p class="table-subtitle mb-0">
+            Manage and review employee leave requests
+        </p>
+
+    </div>
+
+    <a asp-page="Apply"
+           class="btn lms-btn-primary">
+
+        + Apply Leave
+
+    </a>
+
+</div>
+
+<div class="lms-table-wrapper">
+
+    <table class="table lms-table">
+
+        <thead>
+
+            <tr>
+
+                <th>Employee</th>
+
+                <th>Leave Category</th>
+
+                <th>Start Date</th>
+
+                <th>End Date</th>
+
+                <th>Duration</th>
+
+                <th>Reason</th>
+
+                <th>Document</th>
+
+                <th>Status</th>
+
+                <th>Applied On</th>
+
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.EmployeeLeaveList)
+            {
+                <tr>
+
+                    <td>
+                        @item.EmployeeName
+                    </td>
+
+                    <td>
+                        @item.LeaveCategoryTitle
+                    </td>
+
+                    <td>
+                        @Html.DisplayDate(item.StartDate)
+                    </td>
+
+                    <td>
+                        @Html.DisplayDate(item.EndDate)
+                    </td>
+
+                    <td>
+                        @item.Duration Day(s)
+                    </td>
+
+                    <td>
+                        @item.Reason
+                    </td>
+
+                    <td>
+
+                        @if (!string.IsNullOrWhiteSpace(item.SupportingDocument))
+                        {
+                            <a href="~/uploads/@item.SupportingDocument"
+                                   target="_blank"
+                                   class="btn btn-outline-primary document-btn">
+
+                                View
+
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                No Document
+                            </span>
+                        }
+
+                    </td>
+
+                    <td>
+
+                        @if (item.Status == SLConstants.Messages.Approved)
+                        {
+                            <span class="status-approved">
+                                Approved
+                            </span>
+                        }
+                        else if (item.Status == SLConstants.Messages.Rejected)
+                        {
+                            <span class="status-rejected">
+                                Rejected
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status-pending">
+                                Pending
+                            </span>
+                        }
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayDate(item.CreatedOnUTC)
+                    </td>
+
+                    <td>
+
+                        @if (item.Status == SLConstants.Messages.Pending)
+                        {
+                            <a asp-page-handler="Approve"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-success btn-sm">
+
+                                Approve
+
+                            </a>
+
+                            <a asp-page-handler="Reject"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-danger btn-sm">
+
+                                Reject
+
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                Completed
+                            </span>
+                        }
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

@@ -1,0 +1,84 @@
+﻿@page
+@using LeaveManagementSystem.AppCode
+@model LeaveManagementSystem.Pages.WFH.ListModel
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="page-title mb-1">WFH Requests</h2>
+
+        <p class="page-subtitle mb-0">
+            Work From Home requests
+        </p>
+    </div>
+
+    <a asp-page="Apply" class="btn btn-success action-btn">
+        + Apply WFH
+    </a>
+
+</div>
+
+<div class="card lms-card">
+
+    <div class="card-body">
+
+        <table class="table table-hover lms-table">
+
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Document</th>
+                   
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.WFHList)
+                {
+                    <tr>
+
+                        <td>@item.EmployeeName</td>
+
+                        <td>@Html.DisplayDate(item.StartDate)</td>
+
+                        <td>@Html.DisplayDate(item.EndDate)</td>
+
+                        <td>@item.Reason</td>
+
+                        <td>
+
+                            @if (!string.IsNullOrEmpty(item.SupportingDocument))
+                            {
+                                <a href="~/uploads/@item.SupportingDocument"
+                                       target="_blank"
+                                       class="btn btn-sm btn-outline-primary">
+
+                                    View Document
+
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    No Document
+                                </span>
+                            }
+
+                        </td>
+
+                       
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
